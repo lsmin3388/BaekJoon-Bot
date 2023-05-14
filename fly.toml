@@ -1,0 +1,11 @@
+# fly.toml app configuration file generated for baekjoonbot on 2023-05-14T15:29:47+09:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "baekjoonbot"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
