@@ -63,14 +63,21 @@
 ---
 
 ## on_ready(self)
+
+on_ready 함수는 봇의 최초 실행 시 실행되는 함수입니다.
+해당 함수에서는 봇의 상태 표시 지정, json파일이 있는지(없으면 생성), dayDatas폴더가 있는지(없으면 생성)를 처리합니다.
+
 ```python
 async def on_ready(self):
         print('Logged on as {0}!'.format(self.user))
         await self.change_presence(status=discord.Status.online, activity=discord.Game("!명령어"))
-        if not os.path.isfile(JSON):
+        # 봇 상태 표시
+        
+        if not os.path.isfile(JSON): # JSON = 'userdatas.json'
             with open(JSON, 'w') as f:
                 data = dict()
                 json.dump(data, f, indent="\t", ensure_ascii=False)
+                
         if not os.path.isdir('dayDatas'):
             os.mkdir('dayDatas')`
 ```
@@ -78,6 +85,38 @@ async def on_ready(self):
 ---
 
 ## on_message(self, message)
+
+다음은 유저가 메시지를 보낼 때 처리되는 함수입니다. 명령어를 치는 경우보단 일반 대화를 치는 경우가 압도적으로 많기 때문에 불필요한 실행을 줄이고자 초반에서 명령어가 맞는지의 여부를 확인해야 합니다. 또한 명령어가 많은 만큼 if 문을 잘 연계하여 명령어를 잘 처리해야만 합니다. 
+
+```python
+async def on_message(self, message):
+    if message.author == self.user: return
+    if len(message.content) >= 1 and message.content[0] != '!': return
+    
+    args = message.content.split()
+    if len(args) < 1: return
+        
+    if args[0] in HELP: # HELP = ['!도움말', '!명령어', '!help', '!helps']
+        ~~
+    elif args[0] == '!백준가입':
+        ~~~
+    elif args[0] == '!이름변경':
+        ~~~
+    elif args[0] == '!백준아이디변경':
+        ~~~
+    elif args[0] == '!백준':
+        ~~~
+        if args[1] == '인증':
+            ~~~
+        elif args[1] == '확인':
+            ~~~
+        elif args[1] == '오늘안한사람':
+            ~~~
+        elif args[1] == '이때안한사람':
+            ~~~
+        elif args[1] == '이사이안한사람':
+            ~~~
+```
 
 ---
 
