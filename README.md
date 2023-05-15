@@ -197,6 +197,7 @@ if response.status_code != 200:
 
 그럼 이제 requests 패키지를 이용해 html 문서를 가져왔으니 BeautifulSoup 패키지를 이용해 가공처리 해봅시다.
 여기서부터 정말로 귀찮고 보기 싫지만 해당 사이트에 들어가서 요소 검사를 해봅시다.
+
 <img width="50%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/d6c830f9-77e2-4985-971b-ef90de3e5202"/>
 
 살펴보니깐 tbody가 하나밖에 없고 그냥 엄청 단순한 구조로 되어 있더라구요.
