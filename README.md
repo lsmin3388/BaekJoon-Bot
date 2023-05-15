@@ -118,7 +118,7 @@ async def on_message(self, message):
 ---
 ## JSON 관리 :: Getter Setter
 
-실제로 저장해야 하는 데이터가 많을뿐더러, 추후 업데이트를 하면서 데이터가 확장될 여지가 있습니다. 그래서 저는 JSON을 선택했고, JSON파일을 쉽게 읽어오고자 Getter과 Setter 메소드를 만들었습니다.
+백준봇은 저장해야 하는 유저 데이터가 많을뿐더러, 추후 업데이트하면서 데이터가 확장될 여지가 있습니다. 그래서 저는 JSON을 선택했고, JSON 파일을 쉽게 읽어오고자 Getter와 Setter 메소드를 만들었습니다.
 </br></br>
 먼저 JSON 파일을 읽어오는 방법은 json.load(PATH)를 이용하면 됩니다.
 
@@ -196,14 +196,14 @@ if response.status_code != 200:
     return
 ```
 </br>
-이렇게 적으면 response라는 변수에 GET방식으로 request해서 받아온 값이 저장됩니다. 밑에 != 200 이라고 적혀있는 부분은 status_code가 200이 아니라면 성공적으로 서버로부터 데이터를 request한 것이 아니라고 하더라구요. 그래서 넣어줬습니다.
+이렇게 적으면 response라는 변수에 GET 방식으로 request 해서 받아온 값이 저장됩니다. 밑에 "!= 200"이라고 적혀있는 부분은 status_code가 200이 아니라면 성공적으로 서버로부터 데이터를 request 한 것이 아니라고 하더라구요. 그래서 넣어줬습니다.
 </br></br></br>
-그럼 이제 requests 패키지를 이용해 html 문서를 가져왔으니 BeautifulSoup 패키지를 이용해 가공처리 해봅시다.
-여기서부터 정말로 귀찮고 보기 싫지만 해당 사이트에 들어가서 요소 검사를 해봅시다.
+그럼 이제 requests 패키지를 이용해 html 문서를 가져왔으니 BeautifulSoup 패키지를 이용해 가공 처리 해봅시다.
+여기서부터 정말로 귀찮고 보기 싫지만.. 해당 사이트에 들어가서 요소 검사를 해봅시다.
 </br></br></br>
 <img width="60%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/21bcc972-8883-42c8-9b5a-028074687195"/>
 </br></br>
-우리가 가져올 것들은 사진에 표시되어 있는 3개의 td태그 입니다. 각각 3번째, 4번째, 9번째 td태그라는걸 생각하고, 3번째 td에서 a태그 안에 있는 href값, 4번째 td에서 span태그 안에 있는 data-color값, 9번째 td에서 a태그 안에 있는 data-original-title값을 가져오도록 만듭시다.
+우리가 가져올 것들은 사진에 표시된 3개의 td태그 입니다. 각각 3번째, 4번째, 9번째 td 태그임을 생각하고, 3번째 td에서 a 태그 안에 있는 href 값, 4번째 td에서 span 태그 안에 있는 data-color 값, 9번째 td에서 a 태그 안에 있는 data-original-title 값을 가져오도록 만듭시다.
 </br></br></br>
 
 ```python
@@ -240,9 +240,9 @@ for s in status:
     if len(problem_yesno) >= max_index: break
 ```
 
-이렇게 만드시면 problem_num, problem_yesno, problem_date 리스트에 각각 문제번호, 풀었는지의 여부, 날짜 데이터가 저장될 것입니다. 
+잘 따라오셨으면 problem_num, problem_yesno, problem_date 리스트에 각각 문제번호, 풀었는지의 여부, 날짜 데이터가 저장될 것입니다. 이를 이용해서 마음대로 데이터를 사용하시면 되겠습니다.
 
-다음은 전체 소스입니다.
+다음은 크롤링한 데이터를 통해 출석체크를 확인하는 메소드입니다.
 
 ```python
 def checkBaekJoon(self, accountId, pbnum):
