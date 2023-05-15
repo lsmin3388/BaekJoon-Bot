@@ -1,7 +1,7 @@
 # 백준 문제 풀이를 감지하고 출석 체크하는 디스코드 봇 제작
 
 ## 목차
-  * [작동 방식 고안](#--------)
+  * [작동 방식 고안](#작동-방식-고안)
   * [명령어 선정](#------)
   * [on_ready(self)](#on-ready-self-)
   * [on_message(self, message)](#on-message-self--message-)
