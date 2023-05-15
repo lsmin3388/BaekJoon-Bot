@@ -61,7 +61,6 @@
 ```
 
 ---
-
 ## on_ready(self)
 
 on_ready 함수는 봇의 최초 실행 시 실행되는 함수입니다.
@@ -83,7 +82,6 @@ async def on_ready(self):
 ```
 
 ---
-
 ## on_message(self, message)
 
 다음은 유저가 메시지를 보낼 때 처리되는 함수입니다. 명령어를 치는 경우보단 일반 대화를 치는 경우가 압도적으로 많기 때문에 불필요한 실행을 줄이고자 초반에서 명령어가 맞는지의 여부를 확인해야 합니다. 또한 명령어가 많은 만큼 if 문을 잘 연계하여 명령어를 잘 처리해야만 합니다. 
@@ -119,7 +117,6 @@ async def on_message(self, message):
 ```
 
 ---
-
 ## JSON 관리 :: Getter Setter
 
 ---
