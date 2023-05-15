@@ -113,7 +113,7 @@ async def on_message(self, message):
 ## JSON 관리 :: Getter Setter
 
 실제로 저장해야 하는 데이터가 많을뿐더러, 추후 업데이트를 하면서 데이터가 확장될 여지가 있습니다. 그래서 저는 JSON을 선택했고, JSON파일을 쉽게 읽어오고자 Getter과 Setter 메소드를 만들었습니다.
-
+</br></br>
 먼저 JSON 파일을 읽어오는 방법은 json.load(PATH)를 이용하면 됩니다.
 
 ```python
@@ -122,19 +122,22 @@ with open(JSON, 'r') as f:
 ```
 
 여기서 data는 딕셔너리 타입을 취하고 있습니다. 즉 이 딕셔너리를 가져와서 출력하거나 원하는 값으로 수정하면 됩니다.
+</br></br></br>
 
 ```python
 data['7923013']['userName'] = '홍길동'
 data['2928932']['count'] = 5
 ```
 
+</br></br></br>
 딕셔너리 수정을 마치면 딕셔너리를 dump하여 json에 저장합니다.
+
 
 ```python
 with open(JSON, 'w', encoding='utf-8') as f:
     json.dump(data, f, indent="\t", ensure_ascii=False)
 ```
-
+</br></br></br>
 다음은 완성된 Getter/Setter 메소드입니다.
 
 ```python
