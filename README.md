@@ -68,17 +68,17 @@ on_ready 함수는 봇의 최초 실행 시 실행되는 함수입니다.
 
 ```python
 async def on_ready(self):
-        print('Logged on as {0}!'.format(self.user))
-        await self.change_presence(status=discord.Status.online, activity=discord.Game("!명령어"))
-        # 봇 상태 표시
-        
-        if not os.path.isfile(JSON): # JSON = 'userdatas.json'
-            with open(JSON, 'w') as f:
-                data = dict()
-                json.dump(data, f, indent="\t", ensure_ascii=False)
-                
-        if not os.path.isdir('dayDatas'):
-            os.mkdir('dayDatas')`
+    print(f'Logged on as {self.user}!')
+    await self.change_presence(status=discord.Status.online, activity=discord.Game("!명령어"))
+    # 봇 상태 표시
+    
+    if not os.path.isfile(JSON): # JSON = 'userdatas.json'
+        with open(JSON, 'w') as f:
+            data = dict()
+            json.dump(data, f, indent="\t", ensure_ascii=False)
+            
+    if not os.path.isdir('dayDatas'):
+        os.mkdir('dayDatas')`
 ```
 
 ---
@@ -119,9 +119,178 @@ async def on_message(self, message):
 ---
 ## JSON 관리 :: Getter Setter
 
----
+실제로 저장해야 하는 데이터가 많을뿐더러, 추후 업데이트를 하면서 데이터가 확장될 여지가 있습니다. 그래서 저는 JSON을 선택했고, JSON파일을 쉽게 읽어오고자 Getter과 Setter 메소드를 만들었습니다.
 
+먼저 JSON 파일을 읽어오는 방법은 json.load(PATH)를 이용하면 됩니다.
+
+```python
+with open(JSON, 'r') as f:
+    data = json.load(f)
+```
+
+여기서 data는 딕셔너리 타입을 취하고 있습니다. 즉 이 딕셔너리를 가져와서 출력하거나 원하는 값으로 수정하면 됩니다.
+
+```python
+data['7923013']['userName'] = '홍길동'
+data['2928932']['count'] = 5
+```
+
+딕셔너리 수정을 마치면 딕셔너리를 dump하여 json에 저장합니다.
+
+```python
+with open(JSON, 'w', encoding='utf-8') as f:
+    json.dump(data, f, indent="\t", ensure_ascii=False)
+```
+
+다음은 완성된 Getter/Setter 메소드입니다.
+
+```python
+def getter(self, id, key):
+    with open(JSON, 'r') as f:
+        data = json.load(f)
+
+    return data[str(id)][key]
+
+def getUserList(self):
+    with open(JSON, 'r') as f:
+        data = json.load(f)
+    
+    datas = list()
+    for k in data:
+        datas.append(k)
+
+    return datas
+
+def setter(self, id,  key, value):
+    with open(JSON, 'r') as f:
+        data = json.load(f)
+    data[str(id)][key] = value
+
+    with open(JSON, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent="\t", ensure_ascii=False)
+```
+
+---
 ## 백준 웹사이트 크롤링(스크래핑) :: BaekJoon Crawling(Scraping)
+
+백준의 출석체크를 직접 구현해봅시다. 
+
+먼저 사용할 파이썬 패키지를 설치해야 합니다. 크롤링할 때 대표적으로 사용하는 requests와 BeautifulSoup를 설치하도록 합시다. 
+```bash
+pip install requests
+pip install beautifulsoup
+```
+여기서 requests 패키지는 html 문서를 가져올 때, BeautifulSoup는 가져온 html 내용을 쉽게 가공하고 처리할 때 사용합니다.
+
+다음으로 어떤 웹사이트를 크롤링할지 정해봅시다. 백준 웹사이트를 온 곳에 다 돌아본 결과 오늘 유저들이 문제를 풀었는지 확인하기 위해서는 "채점현황"을 긁어오는 것이 좋다고 생각했습니다. 왜냐하면 오늘 풀었는 문제인지 날짜 정보도 나오고, 문제를 성공적으로 해결했는지의 여부도 알 수 있었습니다. 또한 "https://www.acmicpc.net/status?user_id=유저아이디" 주소에서 유저아이디 부분만 바꿔서 request 하면 언제든지 긁어올 수 있기 때문에 이 주소를 사용하겠습니다.
+
+
+```python
+response = requests.get('https://www.acmicpc.net/status?user_id={}'.format(accountId), 
+                                    headers={"User-Agent": "Mozilla/5.0"})
+if response.status_code != 200:
+    print('failed connect.')
+    return
+```
+
+이렇게 적으면 response라는 변수에 GET방식으로 request해서 받아온 값이 저장됩니다. 밑에 != 200 이라고 적혀있는 부분은 status_code가 200이 아니라면 성공적으로 서버로부터 데이터를 request한 것이 아니라고 하더라구요. 그래서 넣어줬습니다.
+
+그럼 이제 requests 패키지를 이용해 html 문서를 가져왔으니 BeautifulSoup 패키지를 이용해 가공처리 해봅시다.
+여기서부터 정말로 귀찮고 보기 싫지만 해당 사이트에 들어가서 요소 검사를 해봅시다.
+<img width="80%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/d6c830f9-77e2-4985-971b-ef90de3e5202"/>
+살펴보니깐 tbody가 하나밖에 없고 그냥 엄청 단순한 구조로 되어 있더라구요.
+
+<img width="60%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/21bcc972-8883-42c8-9b5a-028074687195"/>
+
+우리가 가져올 것들은 사진에 표시되어 있는 3개의 td태그 입니다. 각각 3번째, 4번째, 9번째 td태그라는걸 생각하고, 3번째 td에서 a태그 안에 있는 href값, 4번째 td에서 span태그 안에 있는 data-color값, 9번째 td에서 a태그 안에 있는 data-original-title값을 가져오도록 만듭시다.
+
+```python
+soup = BeautifulSoup(response.text, 'html.parser')
+
+pbnumbers = soup.select('tbody > tr > td:nth-child(3) > a')
+status = soup.select('tbody > tr > td:nth-child(4) > span')
+datadate = soup.select('tbody > tr > td:nth-child(9) > a')
+today = datetime.today().strftime("%Y%m%d")
+
+problem_num = []
+problem_yesno = []
+problem_date = []
+max_index = 0
+
+for i, t in enumerate(datadate):
+    psds = t['title'].split('-')
+    day = psds[0] + psds[1] + psds[2][0:2]
+    
+    if day != today:
+        max_index = i
+        break
+
+    problem_date.append(day)
+
+for l in pbnumbers:
+    problem_num.append(l['href'][9:])
+
+    if len(problem_num) >= max_index: break
+
+for s in status:
+    problem_yesno.append(s['data-color'])
+
+    if len(problem_yesno) >= max_index: break
+```
+이렇게 만드시면 problem_num, problem_yesno, problem_date 리스트에 각각 문제번호, 풀었는지의 여부, 날짜 데이터가 저장될 것입니다. 
+
+다음은 전체 소스입니다.
+
+```python
+def checkBaekJoon(self, accountId, pbnum):
+    try:
+        response = requests.get('https://www.acmicpc.net/status?user_id={}'.format(accountId), 
+                                headers={"User-Agent": "Mozilla/5.0"})
+        if response.status_code != 200:
+            print('failed connect.')
+            return
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+
+        pbnumbers = soup.select('tbody > tr > td:nth-child(3) > a')
+        status = soup.select('tbody > tr > td:nth-child(4) > span')
+        datadate = soup.select('tbody > tr > td:nth-child(9) > a')
+        today = datetime.today().strftime("%Y%m%d")
+
+        problem_num = []
+        problem_yesno = []
+        problem_date = []
+        max_index = 0
+
+        for i, t in enumerate(datadate):
+            psds = t['title'].split('-')
+            day = psds[0] + psds[1] + psds[2][0:2]
+            
+            if day != today:
+                max_index = i
+                break
+
+            problem_date.append(day)
+
+        for l in pbnumbers:
+            problem_num.append(l['href'][9:])
+
+            if len(problem_num) >= max_index: break
+
+        for s in status:
+            problem_yesno.append(s['data-color'])
+
+            if len(problem_yesno) >= max_index: break
+
+        for i, v in enumerate(problem_num):
+            if v == pbnum:
+                if problem_yesno[i] == 'ac':
+                    return True
+    except Exception as e:
+        print(e)
+    return False
+```
+
 
 ---
 
