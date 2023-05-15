@@ -198,11 +198,11 @@ if response.status_code != 200:
 그럼 이제 requests 패키지를 이용해 html 문서를 가져왔으니 BeautifulSoup 패키지를 이용해 가공처리 해봅시다.
 여기서부터 정말로 귀찮고 보기 싫지만 해당 사이트에 들어가서 요소 검사를 해봅시다.
 
-<img width="50%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/d6c830f9-77e2-4985-971b-ef90de3e5202"/>
+<img width="70%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/d6c830f9-77e2-4985-971b-ef90de3e5202"/>
 
 살펴보니깐 tbody가 하나밖에 없고 그냥 엄청 단순한 구조로 되어 있더라구요.
 
-<img width="50%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/21bcc972-8883-42c8-9b5a-028074687195"/>
+<img width="60%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/21bcc972-8883-42c8-9b5a-028074687195"/>
 
 우리가 가져올 것들은 사진에 표시되어 있는 3개의 td태그 입니다. 각각 3번째, 4번째, 9번째 td태그라는걸 생각하고, 3번째 td에서 a태그 안에 있는 href값, 4번째 td에서 span태그 안에 있는 data-color값, 9번째 td에서 a태그 안에 있는 data-original-title값을 가져오도록 만듭시다.
 
@@ -239,6 +239,7 @@ for s in status:
 
     if len(problem_yesno) >= max_index: break
 ```
+
 이렇게 만드시면 problem_num, problem_yesno, problem_date 리스트에 각각 문제번호, 풀었는지의 여부, 날짜 데이터가 저장될 것입니다. 
 
 다음은 전체 소스입니다.
