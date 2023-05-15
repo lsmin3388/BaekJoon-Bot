@@ -1,6 +1,12 @@
 # 백준 문제 풀이를 감지하고 출석 체크하는 디스코드 봇 제작
 
 ## 목차
+  * [작동 방식 고안](#--------)
+  * [명령어 선정](#------)
+  * [on_ready(self)](#on-ready-self-)
+  * [on_message(self, message)](#on-message-self--message-)
+  * [JSON 관리 :: Getter Setter](#json-------getter-setter)
+  * [백준 웹사이트 크롤링(스크래핑) :: BaekJoon Crawling(Scraping)](#---------------------baekjoon-crawling-scraping-)
 ---
 ## 작동 방식 고안
 
@@ -77,7 +83,7 @@ async def on_ready(self):
 ---
 ## on_message(self, message)
 
-다음은 유저가 메시지를 보낼 때 처리되는 함수입니다. 명령어를 치는 경우보단 일반 대화를 치는 경우가 압도적으로 많기 때문에 불필요한 실행을 줄이고자 초반에서 명령어가 맞는지의 여부를 확인해야 합니다. 또한 명령어가 많은 만큼 if 문을 잘 연계하여 명령어를 잘 처리해야만 합니다. 
+다음은 유저가 메시지를 보낼 때 처리되는 함수입니다. 명령어를 치는 경우보단 일반 대화를 치는 경우가 압도적으로 많기 때문에 불필요한 실행을 줄이고자 초반에서 명령어가 맞는지의 여부를 확인해야 합니다. 또한 명령어가 많은 만큼 if문을 잘 연계하여 명령어를 잘 처리해야만 합니다. 
 
 ```python
 async def on_message(self, message):
@@ -122,7 +128,6 @@ with open(JSON, 'r') as f:
 ```
 
 여기서 data는 딕셔너리 타입을 취하고 있습니다. 즉 이 딕셔너리를 가져와서 출력하거나 원하는 값으로 수정하면 됩니다.
-</br></br></br>
 
 ```python
 data['7923013']['userName'] = '홍길동'
@@ -289,9 +294,5 @@ def checkBaekJoon(self, accountId, pbnum):
     return False
 ```
 
-
----
-
-## 두 날짜 사이의 날짜 리스트 반환 :: return a list of dates between two dates
 
 ---
