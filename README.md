@@ -1,13 +1,6 @@
 # 백준 문제 풀이를 감지하고 출석 체크하는 디스코드 봇 제작
 
 ## 목차
-- [작동 방식 고안](#--------)
-- [명령어 선정](#------)
-- [on_ready(self)](#on-ready-self-)
-- [on_message(self, message)](#on-message-self--message-)
-- [JSON 관리 :: Getter Setter](#JSON------getter-setter)
-- [백준 웹사이트 크롤링(스크래핑) :: BaekJoon Crawling(Scraping)](#---------------------baekjoon-crawling-scraping-)
-- [두 날짜 사이의 날짜 리스트 반환 :: return a list of dates between two dates](#----------------------return-a-list-of-dates-between-two-dates)
 ---
 ## 작동 방식 고안
 
@@ -176,14 +169,16 @@ def setter(self, id,  key, value):
 백준의 출석체크를 직접 구현해봅시다. 
 
 먼저 사용할 파이썬 패키지를 설치해야 합니다. 크롤링할 때 대표적으로 사용하는 requests와 BeautifulSoup를 설치하도록 합시다. 
+</br>
+
 ```bash
 pip install requests
 pip install beautifulsoup
 ```
 여기서 requests 패키지는 html 문서를 가져올 때, BeautifulSoup는 가져온 html 내용을 쉽게 가공하고 처리할 때 사용합니다.
-
+</br></br></br>
 다음으로 어떤 웹사이트를 크롤링할지 정해봅시다. 백준 웹사이트를 온 곳에 다 돌아본 결과 오늘 유저들이 문제를 풀었는지 확인하기 위해서는 "채점현황"을 긁어오는 것이 좋다고 생각했습니다. 왜냐하면 오늘 풀었는 문제인지 날짜 정보도 나오고, 문제를 성공적으로 해결했는지의 여부도 알 수 있었습니다. 또한 "https://www.acmicpc.net/status?user_id=유저아이디" 주소에서 유저아이디 부분만 바꿔서 request 하면 언제든지 긁어올 수 있기 때문에 이 주소를 사용하겠습니다.
-
+</br>
 
 ```python
 response = requests.get('https://www.acmicpc.net/status?user_id={}'.format(accountId), 
@@ -192,26 +187,16 @@ if response.status_code != 200:
     print('failed connect.')
     return
 ```
-
+</br>
 이렇게 적으면 response라는 변수에 GET방식으로 request해서 받아온 값이 저장됩니다. 밑에 != 200 이라고 적혀있는 부분은 status_code가 200이 아니라면 성공적으로 서버로부터 데이터를 request한 것이 아니라고 하더라구요. 그래서 넣어줬습니다.
-
-
-
-
+</br></br></br>
 그럼 이제 requests 패키지를 이용해 html 문서를 가져왔으니 BeautifulSoup 패키지를 이용해 가공처리 해봅시다.
 여기서부터 정말로 귀찮고 보기 싫지만 해당 사이트에 들어가서 요소 검사를 해봅시다.
-
-
-
-<img width="70%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/d6c830f9-77e2-4985-971b-ef90de3e5202"/>
-</br></br></br>
-살펴보니깐 tbody가 하나밖에 없고 그냥 엄청 단순한 구조로 되어 있더라구요.
 </br></br></br>
 <img width="60%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/21bcc972-8883-42c8-9b5a-028074687195"/>
-
-
+</br></br>
 우리가 가져올 것들은 사진에 표시되어 있는 3개의 td태그 입니다. 각각 3번째, 4번째, 9번째 td태그라는걸 생각하고, 3번째 td에서 a태그 안에 있는 href값, 4번째 td에서 span태그 안에 있는 data-color값, 9번째 td에서 a태그 안에 있는 data-original-title값을 가져오도록 만듭시다.
-
+</br></br></br>
 
 ```python
 soup = BeautifulSoup(response.text, 'html.parser')
