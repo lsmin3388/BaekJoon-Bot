@@ -2,8 +2,8 @@
 
 ## 목차
   * [작동 방식 고안](#작동-방식-고안)
-  * [명령어 선정](#------)
-  * [on_ready(self)](#on-ready-self-)
+  * [명령어 선정](#명령어-선정)
+  * [on_ready(self)](#on_ready(self))
   * [on_message(self, message)](#on-message-self--message-)
   * [JSON 관리 :: Getter Setter](#json-------getter-setter)
   * [백준 웹사이트 크롤링(스크래핑) :: BaekJoon Crawling(Scraping)](#---------------------baekjoon-crawling-scraping-)
