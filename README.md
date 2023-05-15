@@ -204,11 +204,9 @@ if response.status_code != 200:
 
 
 <img width="70%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/d6c830f9-77e2-4985-971b-ef90de3e5202"/>
-
-
+</br></br></br>
 살펴보니깐 tbody가 하나밖에 없고 그냥 엄청 단순한 구조로 되어 있더라구요.
-
-
+</br></br></br>
 <img width="60%" src="https://github.com/lsmin3388/BaekJoon-Bot/assets/67568334/21bcc972-8883-42c8-9b5a-028074687195"/>
 
 
